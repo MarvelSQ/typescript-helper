@@ -18,3 +18,10 @@ type Keys<T extends { [x: string]: any;[x: number]: any }> = {
 type SafeOmit<T, K extends string | number | symbol> = Exclude<Keys<T>, K> extends keyof T
     ? Pick<T, Exclude<Keys<T>, K>>
     : {};
+
+/**
+ * @description allow propertys not in T
+ * @param T Original Type
+ * @param A Actual Type
+ */
+type Allow<T, A> = { [P in keyof A]: P extends keyof T ? T[P] : A[P] } & T;

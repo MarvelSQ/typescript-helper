@@ -38,3 +38,24 @@ type NoAgeType = Omit<OriginType, "age">;
 type RealNoAgeType = SafeOmit<OriginType, "age">;
 // { name?: string }
 ```
+
+## Allow<T, A>
+
+Allow is a Generic for React ComponetProps Condition
+```ts
+// we need to allow more props to add in component
+function Base({name, age, ...props}: {name:string;age:number}){
+    return <div {...props}>{name}: {age}</div>;
+}
+
+// we can modify props type to {name: string; age: number; [x:string]: any}
+const Instance = <Base name="test" age={20} className="addition-class">
+// in this case, Base Component's prop type was polluted by [x:string]: any
+// means, this is some props that dosen't belong to 'Base'
+
+// or
+function Base<P>({name, age, ...props}: P & Allow<{name: string; age: number}, P>){
+    return <div {...props}>{name}: {age}</div>;
+}
+// this time, your props can keep original type, and **allow** you to control component in Instance
+```
